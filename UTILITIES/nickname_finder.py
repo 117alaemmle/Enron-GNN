@@ -3,7 +3,7 @@ import pandas as pd
 import email
 
 print("1. Loading Enron Corpus for Nickname Diagnostic...")
-df = pd.read_csv('./Kaggle_DataSet/emails.csv', nrows=500000)
+df = pd.read_csv('./Kaggle_DataSet/emails.csv')
 
 edges_text = []
 for raw_message in df['message']:

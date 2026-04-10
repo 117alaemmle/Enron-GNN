@@ -2,10 +2,16 @@ import pandas as pd
 import email
 import re
 from collections import defaultdict
+from pathlib import Path
+
+
+SCRIPT_DIR = Path(__file__).parent
+file_path = SCRIPT_DIR.parent / 'Kaggle_DataSet' / 'emails.csv'
 
 print("1. Loading the Enron corpus for text mining...")
 # Let's scan a good chunk of emails to get a solid tally
-df = pd.read_csv('./Kaggle_DataSet/emails.csv', nrows=100000)
+#df = pd.read_csv("../Kaggle_DataSet/emails.csv")
+df = pd.read_csv(file_path)
 
 # This dictionary will keep a scorecard. 
 # Example: {'jeff@enron.com': {'ceo': 5, 'president': 2}}

@@ -19,8 +19,7 @@ output_dir = "interactive_department_maps"
 os.makedirs(output_dir, exist_ok=True)
 
 print("1. Parsing Emails by Quarter...")
-# Loading 200k rows. You can increase to 500k if your RAM allows it!
-df = pd.read_csv('./Kaggle_DataSet/emails.csv', nrows=200000)
+df = pd.read_csv('./Kaggle_DataSet/emails.csv')
 
 quarterly_data = defaultdict(list)
 
