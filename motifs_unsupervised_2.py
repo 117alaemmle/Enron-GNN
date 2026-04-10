@@ -75,7 +75,7 @@ for i in range(num_roles):
     print(f"\n🟢 CLUSTER {i} (Total Nodes: {len(cluster_indices)})")
     
     # --- PART A: THE UNKNOWN ARCHETYPES (The pure math) ---
-    print(f"   [Top 5 Mathematical Archetypes]")
+    print(f"   [Top 10 Mathematical Archetypes]")
     found_internals = 0
     for idx in closest_idx_in_cluster:
         real_node_id = cluster_indices[idx]
