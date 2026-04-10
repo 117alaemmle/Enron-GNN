@@ -69,13 +69,13 @@ for q_label in all_quarters:
     
     q_emails = quarterly_data[q_label]
     
-    # FILTER: Must be involved in at least 5 emails this quarter
+    # FILTER: Must be involved in at least 10 emails this quarter
     node_counts = defaultdict(int)
     for e in q_emails:
         node_counts[e['src']] += 1
         node_counts[e['dst']] += 1
         
-    core_nodes = {node for node, count in node_counts.items() if count >= 5}
+    core_nodes = {node for node, count in node_counts.items() if count >= 10}
     edges = [(e['src'], e['dst'], e['text']) for e in q_emails if e['src'] in core_nodes and e['dst'] in core_nodes]
     
     if len(core_nodes) < 20:
@@ -112,7 +112,7 @@ for q_label in all_quarters:
         z = model.encode(x.float(), edge_index)
         z_np = z.cpu().numpy()
 
-    num_clusters = min(10, len(unique_emails) // 5) # Ensure we don't have more clusters than people
+    num_clusters = min(15, len(unique_emails) // 5) # Ensure we don't have more clusters than people
     clusters = KMeans(n_clusters=num_clusters, n_init=10, random_state=42).fit_predict(z_np)
 
     cluster_texts = {i: [] for i in range(num_clusters)}
@@ -124,7 +124,7 @@ for q_label in all_quarters:
    # NLP Extraction
     custom_stops = list(TfidfVectorizer(stop_words='english').get_stop_words()) + [
         'enron', 'com', 'subject', 'forwarded', 'pm', 'am', 'cc', 'http', 'www', 'ect', 'hou', 'corp', 'mailto', 'thanks', 'mail', 'aol', 'yahoo', 'new', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december',
-        'hello'
+        'hello', 'attached'
     ]
     
     # We add a token_pattern that forces words to be strictly alphabetical (no numbers!)
