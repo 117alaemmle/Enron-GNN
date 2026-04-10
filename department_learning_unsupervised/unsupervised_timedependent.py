@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import torch
 import pandas as pd
@@ -15,8 +16,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Create output directory for our interactive maps
-output_dir = "interactive_department_maps"
-os.makedirs(output_dir, exist_ok=True)
+output_dir = "department_learning_unsupervised/interactive_department_maps"
+os.makedirs(f"{output_dir}", exist_ok=True)
 
 print("1. Parsing Emails by Quarter...")
 df = pd.read_csv('./Kaggle_DataSet/emails.csv')
@@ -122,7 +123,8 @@ for q_label in all_quarters:
     # TIP: You can add "noise" words like 'davis', 'california', 'gas' here to force the model to look deeper!
    # NLP Extraction
     custom_stops = list(TfidfVectorizer(stop_words='english').get_stop_words()) + [
-        'enron', 'com', 'subject', 'forwarded', 'pm', 'am', 'cc', 'http', 'www', 'ect', 'hou', 'corp', 'davis', 'california', 'gas'
+        'enron', 'com', 'subject', 'forwarded', 'pm', 'am', 'cc', 'http', 'www', 'ect', 'hou', 'corp', 'mailto', 'thanks', 'mail', 'aol', 'yahoo', 'new', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december',
+        'hello'
     ]
     
     # We add a token_pattern that forces words to be strictly alphabetical (no numbers!)
@@ -165,7 +167,7 @@ for q_label in all_quarters:
     )
     
     # Save to file instead of opening browser
-    out_path = os.path.join(output_dir, f"enron_silos_{q_label}.html")
+    out_path = os.path.join(output_dir, f"enron_silos_{datetime.now().strftime('%Y%m%d-%H%M')}_{q_label}.html")
     fig.write_html(out_path)
     print(f"   -> Saved map to {out_path}")
 
