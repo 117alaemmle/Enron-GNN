@@ -6,7 +6,7 @@ from torch_geometric.data import Data
 from torch_geometric.utils import degree
 
 print("1. Loading Enron Corpus (Building Hierarchical Graph)...")
-df = pd.read_csv('./Kaggle_DataSet/emails.csv', nrows=500000)
+df = pd.read_csv('./Kaggle_DataSet/emails.csv')
 
 # 2. EMAIL PARSING & MAPPING
 edges_text = []

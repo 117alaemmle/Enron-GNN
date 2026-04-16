@@ -16,7 +16,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # --- SET UP HTML OUTPUT ---
-output_dir = "MotifsUnsupervisedOutput"
+output_dir = "motifs_unsupervised\\MotifsUnsupervisedOutput"
 os.makedirs(output_dir, exist_ok=True)
 timestamp = datetime.now().strftime("%Y%m%d-%H%M")
 html_filename = os.path.join(output_dir, f"motifs_unsupervised_{timestamp}.html")

@@ -1,10 +1,20 @@
 import torch
 import pandas as pd
 import email
+from pathlib import Path
 from motif_detection_train import MotifGNN # Import your model class
 
 print("1. Re-building email mapping (Scanning CSV to get names)...")
-df = pd.read_csv('./Kaggle_DataSet/emails.csv', nrows=500000)
+# Bulletproof path loading
+SCRIPT_DIR = Path(__file__).parent
+file_path = SCRIPT_DIR.parent / 'Kaggle_DataSet' / 'emails.csv'
+
+if not file_path.exists():
+    file_path = SCRIPT_DIR / 'Kaggle_DataSet' / 'emails.csv'
+    if not file_path.exists():
+        file_path = '../Kaggle_DataSet/emails.csv'
+
+df = pd.read_csv(file_path)
 edges_text = []
 for raw_message in df['message']:
     msg = email.message_from_string(raw_message)
@@ -46,8 +56,8 @@ with torch.no_grad():
 
 unlabeled_mask = ~data.train_mask
 
-print(f"\n--- Checking Unlabeled Internal Enron Employees ---")
-count = 0
+print("4. Exporting to CSV...")
+results = []
 
 for i in range(len(unlabeled_mask)):
     if unlabeled_mask[i]:
@@ -59,9 +69,16 @@ for i in range(len(unlabeled_mask)):
             confidence = probs[i][pred_role].item()
             role_str = role_names.get(pred_role, "Unknown")
             
-            # Formatted print statement for clean columns
-            print(f"Email: {email_addr: <35} | Predicted: {role_str: <25} | Confidence: {confidence:.2f}")
-            
-            count += 1
-            if count >= 25:  # Show the first 25 unknown internal employees
-                break
+            results.append({
+                "Email": email_addr,
+                "Predicted_Role": role_str,
+                "Confidence": round(confidence, 4)
+            })
+
+# Save to CSV using Pandas
+results_df = pd.DataFrame(results)
+output_filename = 'unlabeled_predictions.csv'
+results_df.to_csv(output_filename, index=False)
+pd.read_csv('unlabeled_predictions.csv')['Predicted_Role'].value_counts().plot(kind='bar', title='Supervised Model Bias: Over-Prediction of Managers', rot=45, ylabel='Number of Employees'); __import__('matplotlib.pyplot').pyplot.show()
+
+print(f"\n✅ Complete! Saved {len(results_df)} predictions to '{output_filename}'")

@@ -1,4 +1,5 @@
 # RUN AFTER motif_detection_build TO TRAIN THE NEURAL NETWORK ON MOTIF-DEPENDENT GRAPH.
+#If you are going to run the test afterward, don't bother, as the test_holdouts.py automatically calls this one.
 import torch
 import torch.nn.functional as F
 from torch_geometric.nn import SAGEConv # GraphSAGE is excellent for motif patterns

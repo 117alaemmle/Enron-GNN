@@ -1,10 +1,11 @@
+#Run Second to test the model on holdout nodes.
 import torch
 import pandas as pd
 import email
-from motif_detection_train import MotifGNN
+#from motif_detection_train import MotifGNN
 
 print("1. Re-building email mapping...")
-df = pd.read_csv('./Kaggle_DataSet/emails.csv', nrows=500000)
+df = pd.read_csv('./Kaggle_DataSet/emails.csv')
 edges_text = []
 for raw_message in df['message']:
     msg = email.message_from_string(raw_message)
